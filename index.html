@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080b16" />
+  <meta name="description" content="Flex App Studios creates polished mobile simulation apps designed for realistic, immersive experiences." />
+  <meta property="og:title" content="Flex App Studios" />
+  <meta property="og:description" content="Immersive simulation apps for Android." />
+  <meta property="og:type" content="website" />
+  <title>Flex App Studios — Simulation Apps</title>
+
+  <style>
+    :root{
+      --bg:#080b16;
+      --bg-soft:#0d1222;
+      --panel:#11182a;
+      --panel-2:#0d1425;
+      --text:#f7f9ff;
+      --muted:#9ca8c5;
+      --line:rgba(255,255,255,.085);
+      --cyan:#55d6ff;
+      --blue:#6e8cff;
+      --violet:#9f6cff;
+      --green:#65e6b3;
+      --shadow:0 24px 80px rgba(0,0,0,.38);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 650px at 15% -10%,rgba(85,214,255,.12),transparent 62%),
+        radial-gradient(900px 600px at 90% 0%,rgba(159,108,255,.12),transparent 58%),
+        linear-gradient(180deg,#080b16 0%,#090d19 45%,#070a13 100%);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; opacity:.25;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:linear-gradient(to bottom,black,transparent 78%);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1180px,calc(100% - 42px));margin:auto}
+    .nav{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(18px);
+      background:rgba(8,11,22,.72);
+      border-bottom:1px solid transparent;
+    }
+    .nav-inner{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:13px;font-weight:850;letter-spacing:-.3px}
+    .brand span:last-child{font-size:17px}
+    .logo-mark{
+      width:44px;height:44px;border-radius:13px;
+      display:grid;place-items:center;
+      background:linear-gradient(145deg,rgba(85,214,255,.15),rgba(159,108,255,.12));
+      border:1px solid rgba(119,166,255,.28);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 35px rgba(67,115,255,.13);
+    }
+    .logo-mark svg{width:29px;height:29px;display:block}
+    .navlinks{display:flex;align-items:center;gap:26px;color:#b5bfd7;font-size:14px}
+    .navlinks a:hover{color:white}
+    .nav-cta{
+      padding:10px 15px;border:1px solid var(--line);border-radius:11px;
+      background:rgba(255,255,255,.04);color:white!important
+    }
+
+    .hero{padding:105px 0 74px;position:relative}
+    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:center}
+    .kicker{
+      display:inline-flex;align-items:center;gap:9px;
+      padding:7px 11px;border:1px solid rgba(85,214,255,.17);border-radius:999px;
+      background:rgba(85,214,255,.055);color:#bfefff;font-size:13px;font-weight:650
+    }
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 18px rgba(101,230,179,.8)}
+    h1{
+      font-size:clamp(48px,6.9vw,84px);
+      line-height:.99;letter-spacing:-4px;
+      margin:23px 0 25px;max-width:800px
+    }
+    .grad{
+      background:linear-gradient(90deg,#d7f6ff 0%,#74dcff 33%,#7f9eff 67%,#b38aff 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .hero p{font-size:19px;color:var(--muted);max-width:690px;margin:0}
+    .actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:34px}
+    .btn{
+      min-height:48px;padding:0 19px;border-radius:12px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      font-weight:760;border:1px solid var(--line);transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{
+      color:#06101c;border:none;
+      background:linear-gradient(135deg,#84e8ff,#789bff 55%,#b38aff);
+      box-shadow:0 16px 42px rgba(97,153,255,.24)
+    }
+    .btn.secondary{background:rgba(255,255,255,.045)}
+    .micro{margin-top:18px;color:#7886a6;font-size:12px}
+
+    .device-stage{position:relative;min-height:510px;display:grid;place-items:center}
+    .orb{
+      position:absolute;width:410px;height:410px;border-radius:50%;
+      background:radial-gradient(circle,rgba(85,214,255,.18),rgba(110,140,255,.06) 45%,transparent 70%);
+      filter:blur(5px)
+    }
+    .phone{
+      width:260px;height:520px;border-radius:38px;padding:10px;
+      background:linear-gradient(145deg,#1d2537,#080b12);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 42px 95px rgba(0,0,0,.55),0 0 0 7px rgba(255,255,255,.018);
+      position:relative;transform:rotate(4deg)
+    }
+    .screen{
+      width:100%;height:100%;border-radius:30px;overflow:hidden;position:relative;
+      background:
+        radial-gradient(circle at 50% 18%,rgba(125,194,255,.25),transparent 24%),
+        linear-gradient(180deg,#121a35 0%,#0f1b2b 42%,#09111c 100%);
+    }
+    .camera{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:62px;height:16px;border-radius:30px;background:#060912;z-index:2}
+    .sim-ui{padding:48px 17px 15px}
+    .sim-top{font-size:11px;color:#aebada;display:flex;justify-content:space-between}
+    .live-card{
+      margin-top:15px;border:1px solid rgba(255,255,255,.09);border-radius:19px;
+      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+      overflow:hidden
+    }
+    .fake-video{
+      height:230px;display:grid;place-items:center;position:relative;
+      background:
+        radial-gradient(circle at 50% 45%,rgba(100,163,255,.27),transparent 34%),
+        linear-gradient(150deg,#10172d,#1b2140 48%,#13182a);
+    }
+    .person{
+      width:98px;height:98px;border-radius:50%;
+      background:linear-gradient(145deg,#7ce5ff,#796fff 55%,#c079ff);
+      box-shadow:0 18px 45px rgba(92,126,255,.32);
+      position:relative
+    }
+    .person:after{
+      content:"";position:absolute;width:135px;height:80px;border-radius:80px 80px 24px 24px;
+      background:linear-gradient(145deg,#263a66,#18213e);left:50%;transform:translateX(-50%);top:76px
+    }
+    .live-badge{
+      position:absolute;top:14px;left:14px;font-size:10px;font-weight:800;
+      background:#ff3f75;color:white;padding:5px 8px;border-radius:7px
+    }
+    .viewer{position:absolute;top:14px;right:14px;font-size:10px;color:#d8e2ff;background:rgba(0,0,0,.28);padding:5px 7px;border-radius:7px}
+    .chat{padding:12px 13px 6px;display:grid;gap:8px}
+    .bubble{height:8px;border-radius:8px;background:rgba(255,255,255,.10)}
+    .bubble:nth-child(2){width:82%}.bubble:nth-child(3){width:68%}.bubble:nth-child(4){width:91%}
+    .controls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 13px 14px}
+    .control{height:33px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.04)}
+    .float-card{
+      position:absolute;right:0;bottom:70px;width:185px;padding:15px;border-radius:16px;
+      background:rgba(17,24,42,.82);backdrop-filter:blur(14px);
+      border:1px solid var(--line);box-shadow:var(--shadow);transform:rotate(-4deg)
+    }
+    .float-card b{font-size:13px}.float-card p{font-size:11px;margin:5px 0 0;color:#8493b5}
+
+    section{padding:75px 0}
+    .section-head{display:flex;justify-content:space-between;gap:30px;align-items:flex-end;margin-bottom:30px}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:#84dfff;font-weight:800}
+    h2{font-size:clamp(34px,4.2vw,50px);line-height:1.06;letter-spacing:-2px;margin:8px 0 0}
+    .section-copy{max-width:600px;color:var(--muted);margin:0}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{
+      position:relative;padding:27px;border-radius:var(--radius);overflow:hidden;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.025));
+      box-shadow:0 20px 55px rgba(0,0,0,.18)
+    }
+    .card:before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(135deg,rgba(85,214,255,.04),transparent 35%,rgba(159,108,255,.03))
+    }
+    .icon{
+      width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.08);background:#111a2d;font-size:20px
+    }
+    .card h3{font-size:19px;margin:18px 0 9px}.card p{margin:0;color:var(--muted);font-size:14px}
+    .product{
+      min-height:290px;display:flex;flex-direction:column;justify-content:flex-end
+    }
+    .product .tag{
+      position:absolute;top:22px;right:22px;font-size:11px;color:#c4d0ee;
+      padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.035)
+    }
+    .product-art{
+      height:130px;border-radius:16px;margin-bottom:22px;position:relative;overflow:hidden;
+      background:
+        radial-gradient(circle at 20% 20%,rgba(85,214,255,.23),transparent 35%),
+        radial-gradient(circle at 82% 35%,rgba(159,108,255,.20),transparent 33%),
+        linear-gradient(145deg,#121b32,#0a1020);
+      border:1px solid rgba(255,255,255,.06)
+    }
+    .product-art:after{
+      content:"SIM";position:absolute;right:16px;bottom:8px;font-size:52px;font-weight:900;letter-spacing:-4px;
+      color:rgba(255,255,255,.055)
+    }
+
+    .feature-strip{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--line);
+      border-radius:18px;overflow:hidden;background:var(--line)
+    }
+    .stat{background:#0b1020;padding:25px}
+    .stat b{display:block;font-size:22px}.stat span{color:var(--muted);font-size:13px}
+
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .about-panel{padding:31px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.03)}
+    .about-panel p,.about-panel li{color:var(--muted)}
+    .about-panel ul{padding-left:18px;margin-bottom:0}
+    .legal{font-size:14px}
+
+    .contact-card{
+      display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
+      padding:34px;border-radius:26px;border:1px solid rgba(118,159,255,.18);
+      background:
+        radial-gradient(circle at 0% 0%,rgba(85,214,255,.09),transparent 35%),
+        linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.025))
+    }
+    .contact-card p{color:var(--muted);margin:8px 0 0}
+    footer{padding:32px 0 48px;border-top:1px solid var(--line);color:#7f8aa7;font-size:13px}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .footer-links{display:flex;gap:18px}
+
+    @media(max-width:900px){
+      .hero-grid,.about-grid{grid-template-columns:1fr}
+      .device-stage{min-height:470px}
+      .grid3{grid-template-columns:1fr}
+      .feature-strip{grid-template-columns:1fr 1fr}
+      .navlinks a:not(.nav-cta){display:none}
+      h1{letter-spacing:-2.5px}
+    }
+    @media(max-width:560px){
+      .wrap{width:min(100% - 28px,1180px)}
+      .hero{padding-top:70px}
+      .phone{width:230px;height:460px}
+      .float-card{right:-4px;bottom:58px;width:158px}
+      .section-head{display:block}
+      .section-copy{margin-top:14px}
+      .feature-strip{grid-template-columns:1fr}
+      .contact-card{grid-template-columns:1fr}
+      .brand span:last-child{font-size:15px}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Flex App Studios home">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#6ee7ff"/>
+                <stop offset="52%" stop-color="#7397ff"/>
+                <stop offset="100%" stop-color="#b779ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 11h39v10H24v10h22v10H24v12H12z" fill="url(#g)"/>
+            <path d="M47 42l7 7-7 7" fill="none" stroke="#75e3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>Flex App Studios</span>
+      </a>
+      <nav class="navlinks">
+        <a href="#apps">Apps</a>
+        <a href="#studio">Studio</a>
+        <a href="#privacy">Privacy</a>
+        <a class="nav-cta" href="mailto:flexappstudios@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="kicker"><span class="dot"></span> Independent simulation app studio</div>
+          <h1>Simulation apps that feel <span class="grad">convincingly real.</span></h1>
+          <p>
+            Flex App Studios creates polished mobile simulation experiences for Android —
+            built around realistic interfaces, immersive interactions and modern design.
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="#apps">Explore our apps →</a>
+            <a class="btn secondary" href="#studio">About the studio</a>
+          </div>
+          <div class="micro">Designed and developed in Portugal · Android focused</div>
+        </div>
+
+        <div class="device-stage" aria-label="Mobile simulation app preview">
+          <div class="orb"></div>
+          <div class="phone">
+            <div class="screen">
+              <div class="camera"></div>
+              <div class="sim-ui">
+                <div class="sim-top"><span>Flex Live Simulation</span><span>21:47</span></div>
+                <div class="live-card">
+                  <div class="fake-video">
+                    <div class="live-badge">LIVE</div>
+                    <div class="viewer">12.8K</div>
+                    <div class="person"></div>
+                  </div>
+                  <div class="chat">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                  </div>
+                  <div class="controls">
+                    <div class="control"></div><div class="control"></div><div class="control"></div><div class="control"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="float-card">
+            <b>Realistic by design</b>
+            <p>Familiar UI patterns, natural interactions and polished presentation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="apps">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Our products</div>
+            <h2>Simulation-first mobile experiences.</h2>
+          </div>
+          <p class="section-copy">
+            Our apps are designed to recreate familiar digital experiences in a controlled,
+            entertainment-focused environment while keeping the interface simple and believable.
+          </p>
+        </div>
+
+        <div class="grid3">
+          <article class="card product">
+            <span class="tag">In development</span>
+            <div class="product-art"></div>
+            <h3>Flex Live Simulation</h3>
+            <p>
+              A mobile live-stream simulation experience with realistic interface elements,
+              dynamic activity and configurable on-screen interactions.
+            </p>
+          </article>
+
+          <article class="card product">
+            <span class="tag">Simulation</span>
+            <div class="product-art"></div>
+            <h3>Interactive Scenarios</h3>
+            <p>
+              Scenario-driven apps designed around believable mobile interactions, customizable
+              experiences and responsive feedback.
+            </p>
+          </article>
+
+          <article class="card product">
+            <span class="tag">Coming next</span>
+            <div class="product-art"></div>
+            <h3>More Simulations</h3>
+            <p>
+              Flex App Studios is expanding its simulation portfolio with new concepts focused
+              on entertainment, realism and strong visual presentation.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="feature-strip">
+          <div class="stat"><b>Mobile-first</b><span>Built for Android devices</span></div>
+          <div class="stat"><b>Immersive</b><span>Designed to feel believable</span></div>
+          <div class="stat"><b>Modern UI</b><span>Clean and responsive interfaces</span></div>
+          <div class="stat"><b>Maintained</b><span>Testing and ongoing improvements</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="studio">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">The studio</div>
+            <h2>Small studio. Focused products.</h2>
+          </div>
+          <p class="section-copy">
+            Flex App Studios is an independent app development brand created by Bruno Rodrigues
+            and based in Portugal.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-panel">
+            <h3>What we focus on</h3>
+            <p>
+              We specialize in simulation apps: products that reproduce recognizable digital
+              experiences through carefully designed interfaces, animations, controls and
+              realistic user flows.
+            </p>
+            <p>
+              Our priority is to make every app intuitive, visually polished and enjoyable to use.
+            </p>
+          </div>
+
+          <div class="about-panel">
+            <h3>Development principles</h3>
+            <ul>
+              <li>Realistic and consistent simulation experiences</li>
+              <li>Clean, modern and responsive mobile interfaces</li>
+              <li>Responsible handling of user information</li>
+              <li>Testing across Android devices and screen sizes</li>
+              <li>Ongoing maintenance and improvements</li>
+              <li>Compliance with applicable Google Play policies</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="wrap">
+        <div class="about-panel legal">
+          <div class="eyebrow">Privacy</div>
+          <h2 style="font-size:34px">Privacy & transparency</h2>
+          <p>
+            Flex App Studios respects user privacy. Each application will provide clear information
+            about any data it collects, why that data is required, and how it is handled.
+          </p>
+          <p>
+            We do not sell personal information. Where third-party services are used, their own
+            privacy terms may also apply. App-specific privacy disclosures will be made available
+            on the relevant Google Play listing and/or a dedicated privacy policy page before release.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact-card">
+          <div>
+            <div class="eyebrow">Contact</div>
+            <h2 style="font-size:36px">Get in touch with Flex App Studios.</h2>
+            <p>Developer and support enquiries: flexappstudios@gmail.com</p>
+          </div>
+          <a class="btn primary" href="mailto:flexappstudios@gmail.com">Email us →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© 2026 Flex App Studios · Bruno Rodrigues · Portugal</span>
+      <div class="footer-links">
+        <a href="#privacy">Privacy</a>
+        <a href="mailto:flexappstudios@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
