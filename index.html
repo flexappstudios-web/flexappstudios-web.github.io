@@ -14,20 +14,70 @@
   <main id="top">
     <section class="wrap hero"><span class="eyebrow">Made for playful experiences</span><h1>Simulation apps,<br><span>made to feel alive.</span></h1><p>Flex App Studios creates polished social simulations that let people practise, explore and share moments — with clarity about what is real and what is for fun.</p></section>
     <section id="apps" class="wrap apps"><div class="section-head"><span class="eyebrow">Featured apps</span><h2>Designed for the moment</h2><p>Explore our current simulation experiences.</p></div>
-      <article class="app"><div class="copy"><span class="badge">Live simulation</span><h3>LiveFlex</h3><p>A creative space to practise going live, discover reactions and share entertaining moments with friends — before the spotlight is real.</p><div class="facts"><span>Practice modes</span><span>Reactive comments</span><span>Safety-first tools</span></div></div><div class="gallery" data-gallery data-interval="5000" aria-label="LiveFlex screenshots"><div class="slides"><figure class="slide active"><img src="liveflex-hero.png" alt="LiveFlex practice going live"></figure><figure class="slide"><img src="liveflex-comments.png" alt="LiveFlex reactive comments"></figure><figure class="slide"><img src="liveflex-safety.png" alt="LiveFlex safety features"></figure><figure class="slide"><img src="liveflex-practice.png" alt="LiveFlex practice experience"></figure></div><div class="gallery-controls"><button class="arrow prev" aria-label="Previous LiveFlex screenshot">‹</button><div class="dots" aria-label="Choose LiveFlex screenshot"></div><button class="arrow next" aria-label="Next LiveFlex screenshot">›</button></div></div></article>
-      <article class="app reverse crypto"><div class="copy"><span class="badge">Crypto simulation</span><h3>Crypto Flex</h3><p>A high-energy crypto market simulation for exploring a portfolio, following simulated market movement and sharing the fun with friends.</p><p class="notice"><strong>Simulation only.</strong> All balances are fake. Crypto Flex does not use real money and does not support real transactions, trading or financial services.</p><div class="facts"><span>Fake balances</span><span>Simulated market data</span><span>No real transactions</span></div></div><div class="gallery" data-gallery data-interval="5200" aria-label="Crypto Flex screenshots"><div class="slides"><figure class="slide active"><img src="cryptoflex-overview.png" alt="Crypto Flex portfolio overview"></figure><figure class="slide"><img src="cryptoflex-simulation.png" alt="Crypto Flex simulation screen"></figure><figure class="slide"><img src="cryptoflex-social.png" alt="Crypto Flex social simulation"></figure><figure class="slide"><img src="cryptoflex-portfolio.png" alt="Crypto Flex portfolio showcase"></figure></div><div class="gallery-controls"><button class="arrow prev" aria-label="Previous Crypto Flex screenshot">‹</button><div class="dots" aria-label="Choose Crypto Flex screenshot"></div><button class="arrow next" aria-label="Next Crypto Flex screenshot">›</button></div></div></article>
+      <article class="app"><div class="copy"><span class="badge">Live simulation</span><h3>LiveFlex</h3><p>A creative space to practise going live, discover reactions and share entertaining moments with friends — before the spotlight is real.</p><div class="facts"><span>Practice modes</span><span>Reactive comments</span><span>Safety-first tools</span></div></div><div class="gallery" data-gallery data-interval="4000" aria-label="LiveFlex screenshots"><div class="slides"><figure class="slide active"><img src="liveflex-hero.png" alt="LiveFlex practice going live"></figure><figure class="slide"><img src="liveflex-comments.png" alt="LiveFlex reactive comments"></figure><figure class="slide"><img src="liveflex-safety.png" alt="LiveFlex safety features"></figure><figure class="slide"><img src="liveflex-practice.png" alt="LiveFlex practice experience"></figure></div><div class="gallery-controls"><button class="arrow prev" aria-label="Previous LiveFlex screenshot">‹</button><div class="dots" aria-label="Choose LiveFlex screenshot"></div><button class="arrow next" aria-label="Next LiveFlex screenshot">›</button></div></div></article>
+      <article class="app reverse crypto"><div class="copy"><span class="badge">Crypto simulation</span><h3>Crypto Flex</h3><p>A high-energy crypto market simulation for exploring a portfolio, following simulated market movement and sharing the fun with friends.</p><p class="notice"><strong>Simulation only.</strong> All balances are fake. Crypto Flex does not use real money and does not support real transactions, trading or financial services.</p><div class="facts"><span>Fake balances</span><span>Simulated market data</span><span>No real transactions</span></div></div><div class="gallery" data-gallery data-interval="4000" aria-label="Crypto Flex screenshots"><div class="slides"><figure class="slide active"><img src="cryptoflex-overview.png" alt="Crypto Flex portfolio overview"></figure><figure class="slide"><img src="cryptoflex-simulation.png" alt="Crypto Flex simulation screen"></figure><figure class="slide"><img src="cryptoflex-social.png" alt="Crypto Flex social simulation"></figure><figure class="slide"><img src="cryptoflex-portfolio.png" alt="Crypto Flex portfolio showcase"></figure></div><div class="gallery-controls"><button class="arrow prev" aria-label="Previous Crypto Flex screenshot">‹</button><div class="dots" aria-label="Choose Crypto Flex screenshot"></div><button class="arrow next" aria-label="Next Crypto Flex screenshot">›</button></div></div></article>
     </section>
   </main>
   <footer class="wrap footer"><p>© 2026 Flex App Studios · Bruno Rodrigues</p><p><a href="mailto:flexappstudios@gmail.com">flexappstudios@gmail.com</a></p></footer>
   <script>
     document.querySelectorAll('[data-gallery]').forEach(gallery => {
-      const slides=[...gallery.querySelectorAll('.slide')], dots=gallery.querySelector('.dots'); let index=0, timer, paused=false;
-      slides.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(!i?' active':'');b.setAttribute('aria-label',`Show screenshot ${i+1}`);b.addEventListener('click',()=>show(i));dots.append(b)});
-      const dotButtons=[...dots.children];
-      function show(next){slides[index].classList.remove('active');dotButtons[index].classList.remove('active');index=(next+slides.length)%slides.length;slides[index].classList.add('active');dotButtons[index].classList.add('active');reset()}
-      function reset(){clearInterval(timer);if(!paused)timer=setInterval(()=>show(index+1),Number(gallery.dataset.interval))}
-      gallery.querySelector('.prev').addEventListener('click',()=>show(index-1)); gallery.querySelector('.next').addEventListener('click',()=>show(index+1));
-      gallery.addEventListener('mouseenter',()=>{paused=true;clearInterval(timer)});gallery.addEventListener('mouseleave',()=>{paused=false;reset()});gallery.addEventListener('focusin',()=>{paused=true;clearInterval(timer)});gallery.addEventListener('focusout',()=>{paused=false;reset()});reset();
+      const slides = [...gallery.querySelectorAll('.slide')];
+      const dots = gallery.querySelector('.dots');
+      const interval = Number(gallery.dataset.interval) || 4000;
+      let index = 0;
+      let timer = null;
+      let paused = false;
+
+      slides.forEach((_, i) => {
+        const button = document.createElement('button');
+        button.className = `dot${i === 0 ? ' active' : ''}`;
+        button.setAttribute('aria-label', `Show screenshot ${i + 1}`);
+        button.addEventListener('click', () => show(i));
+        dots.append(button);
+      });
+
+      const dotButtons = [...dots.children];
+
+      function show(next) {
+        slides[index].classList.remove('active');
+        dotButtons[index].classList.remove('active');
+        index = (next + slides.length) % slides.length;
+        slides[index].classList.add('active');
+        dotButtons[index].classList.add('active');
+        restartAutoplay();
+      }
+
+      function stopAutoplay() {
+        window.clearTimeout(timer);
+        timer = null;
+      }
+
+      function startAutoplay() {
+        if (paused || document.hidden) return;
+        stopAutoplay();
+        timer = window.setTimeout(() => {
+          show(index + 1);
+        }, interval);
+      }
+
+      function restartAutoplay() {
+        stopAutoplay();
+        startAutoplay();
+      }
+
+      gallery.querySelector('.prev').addEventListener('click', () => show(index - 1));
+      gallery.querySelector('.next').addEventListener('click', () => show(index + 1));
+
+      gallery.addEventListener('pointerenter', () => { paused = true; stopAutoplay(); });
+      gallery.addEventListener('pointerleave', () => { paused = false; startAutoplay(); });
+      gallery.addEventListener('focusin', () => { paused = true; stopAutoplay(); });
+      gallery.addEventListener('focusout', () => { paused = false; startAutoplay(); });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopAutoplay();
+        else startAutoplay();
+      });
+
+      startAutoplay();
     });
   </script>
 </body>
